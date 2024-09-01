@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      - MYSQL_DATABASE=${B2B_DB_NAME}
+      - MYSQL_USER=${B2B_DB_USER}
+      - MYSQL_PASSWORD=${B2B_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${B2B_DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    platform: linux/amd64
+    restart: always
+    build:
+      context: .
+    environment:
+      - DJANGO_SUPERUSER_EMAIL=admin@gmail.com
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=pass
+    env_file:
+      - $ENV
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: >
+      bash -c "cd /app
+      && django-cadmin migrate
+      && django-cadmin collectstatic --no-input
+      && django-cadmin createsuperuser --noinput || true
+      && django-cadmin runserver_plus --print-sql 0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
