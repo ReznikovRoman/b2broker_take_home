@@ -44,6 +44,8 @@ class Base(Configuration):  # type: ignore[misc]
         "rest_framework",
         "rest_framework.authtoken",
         "drf_spectacular",
+
+        "b2broker.billings.apps.BillingsConfig",
     ]
 
     MIDDLEWARE = [
