@@ -148,17 +148,28 @@ class Base(Configuration):  # type: ignore[misc]
 
     # REST_FRAMEWORK
     REST_FRAMEWORK = {
-        "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
-        "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+        "PAGE_SIZE": 10,
+        "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
+        "DEFAULT_PAGINATION_CLASS": "rest_framework_json_api.pagination.JsonApiPageNumberPagination",
+        "DEFAULT_PARSER_CLASSES": [
+            "rest_framework_json_api.parsers.JSONParser",
+        ],
+        "DEFAULT_RENDERER_CLASSES": ["rest_framework_json_api.renderers.JSONRenderer"],
         "DEFAULT_AUTHENTICATION_CLASSES": [
             "b2broker.api.authentication.TokenAuthentication",
         ],
         "DEFAULT_PERMISSION_CLASSES": [
             "rest_framework.permissions.IsAuthenticated",
         ],
-        "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+        "DEFAULT_METADATA_CLASS": "rest_framework_json_api.metadata.JSONAPIMetadata",
+        "DEFAULT_FILTER_BACKENDS": ["rest_framework_json_api.django_filters.DjangoFilterBackend"],
         "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
-        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+        "SEARCH_PARAM": "filter[search]",
+        "TEST_REQUEST_RENDERER_CLASSES": [
+            "rest_framework_json_api.renderers.JSONRenderer",
+        ],
+        "TEST_REQUEST_DEFAULT_FORMAT": "vnd.api+json",
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular_jsonapi.schemas.openapi.JsonApiAutoSchema",
     }
 
     @cached_property
@@ -171,6 +182,13 @@ class Base(Configuration):  # type: ignore[misc]
             "SERVE_AUTHENTICATION": ["rest_framework.authentication.SessionAuthentication"],
             "SERVE_PERMISSIONS": ["b2broker.api.permissions.IsSuperUser"],
             "SERVERS": [{"url": f"{self.PROJECT_BASE_URL}/api/v1"}],
+            # JSON API
+            # provide different schema components for patch and post
+            "COMPONENT_SPLIT_REQUEST": True,
+            # fix path parameter names for nested routes https://chibisov.github.io/drf-extensions/docs/#nested-routes
+            "PREPROCESSING_HOOKS": [
+                "drf_spectacular_jsonapi.hooks.fix_nested_path_parameters",
+            ],
         }
 
     # FILES

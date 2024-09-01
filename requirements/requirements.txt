@@ -17,7 +17,9 @@ django==5.0.4 \
     #   django-extensions
     #   django-filter
     #   djangorestframework
+    #   djangorestframework-jsonapi
     #   drf-spectacular
+    #   drf-spectacular-jsonapi
 django-configurations==2.5.1 \
     --hash=sha256:6e5083757e2bbdf9bb7850567536b96a93515f6b17503d74928ff628db2e0e94 \
     --hash=sha256:ceb84858da2dac846b15e715c2fd936cfc4c7917c074aff8d31700564093955e
@@ -35,10 +37,29 @@ djangorestframework==3.15.2 \
     --hash=sha256:36fe88cd2d6c6bec23dca9804bab2ba5517a8bb9d8f47ebc68981b56840107ad
     # via
     #   -r requirements.in
+    #   djangorestframework-jsonapi
+    #   drf-extensions
     #   drf-spectacular
+    #   drf-spectacular-jsonapi
+djangorestframework-jsonapi==7.0.2 \
+    --hash=sha256:be457adb50aac77eec8893048bf46ad6926dcd26204aa10965a1430610828d50 \
+    --hash=sha256:d6c72a2bee539f1093dd86620e862af2d1a0e60408e38a710146286dbde71d75
+    # via
+    #   -r requirements.in
+    #   drf-spectacular-jsonapi
+drf-extensions==0.7.1 \
+    --hash=sha256:007910437e64aa1d5ad6fc47266a4ac4280e31761e6458eb30fcac7494ac7d4e \
+    --hash=sha256:90abfc11a2221e8daf4cd54457e41ed38cd71134678de9622e806193db027db1
+    # via drf-spectacular-jsonapi
 drf-spectacular==0.27.2 \
     --hash=sha256:a199492f2163c4101055075ebdbb037d59c6e0030692fc83a1a8c0fc65929981 \
     --hash=sha256:b1c04bf8b2fbbeaf6f59414b4ea448c8787aba4d32f76055c3b13335cf7ec37b
+    # via
+    #   -r requirements.in
+    #   drf-spectacular-jsonapi
+drf-spectacular-jsonapi==0.4.1 \
+    --hash=sha256:793d8e8cafbb72c727563c5dcb92a120ce83fd8a60f9848d6b5da39422ca143e \
+    --hash=sha256:e6af0583a698e04c3bc7260f0768d9cbeb8dd6aac7ad5c58221dd58db948d6e7
     # via -r requirements.in
 gunicorn==23.0.0 \
     --hash=sha256:ec400d38950de4dfd418cff8328b2c8faed0edb0d517d3394e457c317908ca4d \
@@ -47,7 +68,9 @@ gunicorn==23.0.0 \
 inflection==0.5.1 \
     --hash=sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417 \
     --hash=sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2
-    # via drf-spectacular
+    # via
+    #   djangorestframework-jsonapi
+    #   drf-spectacular
 jsonschema==4.23.0 \
     --hash=sha256:d71497fef26351a33265337fa77ffeb82423f3ea21283cd9467bb03999266bc4 \
     --hash=sha256:fbadb6f8b144a8f8cf9f0b89ba94501d143e50411a1278633f56a7acf7fd5566
