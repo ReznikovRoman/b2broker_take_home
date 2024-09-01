@@ -5,7 +5,7 @@ class Wallet(models.Model):
     """Crypto wallet."""
 
     label = models.CharField(verbose_name="Label", max_length=255)
-    balance = models.DecimalField(verbose_name="Balance", max_digits=30, decimal_places=18)
+    balance = models.DecimalField(verbose_name="Balance", max_digits=30, decimal_places=18, default="0")
     created_at = models.DateTimeField(verbose_name="Created at", auto_now_add=True)
 
     class Meta:
