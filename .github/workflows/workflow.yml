@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     # needs: lint
     env:
+      PYTHONPATH: ${GITHUB_WORKSPACE}
       B2B_CI: 1
       DJANGO_SETTINGS_MODULE: b2broker.settings
       DJANGO_CONFIGURATION: CI
