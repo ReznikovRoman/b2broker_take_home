@@ -20,6 +20,7 @@ enable_incomplete_feature = ["NewGenericSyntax"]
 
 [tool.django-stubs]
 django_settings_module = "b2broker.settings"
+strict_settings = false
 
 [tool.isort]
 line_length = 120
