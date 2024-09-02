@@ -55,7 +55,7 @@ class DRFClient(APIClient):
                 "is_superuser": True,
             }
         user = cast("UserT", baker.make(User, **user_opts))  # type: ignore[call-overload]
-        self.password = "".join([random.choice(string.hexdigits) for _ in range(6)])  # noqa: S311
+        self.password = "".join([random.choice(string.hexdigits) for _ in range(6)])
         user.set_password(self.password)
         user.save()
         return user
