@@ -25,11 +25,11 @@ jobs:
       B2B_CI: 1
       DJANGO_SETTINGS_MODULE: b2broker.settings
       DJANGO_CONFIGURATION: CI
-      B2B_DB_HOST: localhost
-      B2B_DB_PORT: 3306
-      B2B_DB_NAME: testdb
+      B2B_DB_HOST: 127.0.0.1
+      B2B_DB_PORT: 8888
+      B2B_DB_NAME: test
       B2B_DB_USER: root
-      B2B_DB_PASSWORD: root
+      B2B_DB_PASSWORD: password
     services:
       mysql:
         image: mysql:8.0
