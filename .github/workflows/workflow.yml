@@ -28,13 +28,15 @@ jobs:
       B2B_DB_HOST: localhost
       B2B_DB_PORT: 3306
       B2B_DB_NAME: testdb
-      B2B_DB_USER: root
+      B2B_DB_USER: user
       B2B_DB_PASSWORD: pass
     services:
       mysql:
         image: mysql:8.4
         env:
           MYSQL_DATABASE: $B2B_DB_NAME
+          MYSQL_USER: $B2B_DB_USER
+          MYSQL_PASSWORD: $B2B_DB_PASSWORD
           MYSQL_ROOT_PASSWORD: $B2B_DB_PASSWORD
         ports:
           - "3306:3306"
