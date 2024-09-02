@@ -34,8 +34,8 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
+          MYSQL_ROOT_PASSWORD: $B2B_DB_PASSWORD
+          MYSQL_DATABASE: $B2B_DB_NAME
         ports:
             - '8888:3306'
         options: >-
@@ -45,7 +45,7 @@ jobs:
           --health-retries 3
     steps:
       - uses: actions/checkout@v3
-      - run: mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
+      - run: mysql -h $B2B_DB_HOST --port $B2B_DB_PORT -u root -p $B2B_DB_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS $B2B_DB_NAME;'
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
