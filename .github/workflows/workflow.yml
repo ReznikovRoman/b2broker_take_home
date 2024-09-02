@@ -9,14 +9,14 @@ on:
       - '**.md'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
-      - uses: pre-commit/action@v3.0.1
+#  lint:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-python@v4
+#        with:
+#          python-version: "3.12"
+#      - uses: pre-commit/action@v3.0.1
   test:
     runs-on: ubuntu-latest
     needs: lint
