@@ -6,7 +6,6 @@ from rest_framework.filters import SearchFilter
 from rest_framework_json_api.filters import OrderingFilter
 
 from b2broker.api.pagination import SmallResultsSetPagination
-from b2broker.api.views import MultiSerializerViewSetMixin
 from b2broker.billings.models import Transaction, Wallet
 
 from .serializers import TransactionListSerializer, WalletSerializer
@@ -32,7 +31,6 @@ class WalletViewSet(
 
 
 class TransactionViewSet(
-    MultiSerializerViewSetMixin,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
