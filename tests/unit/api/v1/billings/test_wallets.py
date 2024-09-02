@@ -7,7 +7,7 @@ import pytest
 from django.conf import settings
 
 from b2broker.billings.models import Wallet
-from tests.unit.api.base import BaseClientTest, PaginationTestMixin
+from tests.unit.api.base import BaseClientTest, NotFoundTestMixin, PaginationTestMixin
 
 if TYPE_CHECKING:
     from tests.unit.testlib import DRFClient
@@ -17,12 +17,14 @@ pytestmark = [pytest.mark.django_db]
 
 class TestWalletAPI(
     PaginationTestMixin,
+    NotFoundTestMixin,
     BaseClientTest[Wallet],
 ):
     """Tests for wallets API."""
 
     endpoint = "/api/v1/billings/wallets"
 
+    not_found_endpoint = f"{endpoint}/1000"
     pagination_factory_name = "wallets"
 
     def test_list_ok(self, api: DRFClient, wallets: list[Wallet]) -> None:

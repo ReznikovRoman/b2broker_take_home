@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from b2broker.billings.models import Transaction
-from tests.unit.api.base import BaseClientTest, PaginationTestMixin
+from tests.unit.api.base import BaseClientTest, NotFoundTestMixin, PaginationTestMixin
 
 if TYPE_CHECKING:
     from tests.unit.testlib import DRFClient
@@ -15,12 +15,14 @@ pytestmark = [pytest.mark.django_db]
 
 class TestTransactionAPI(
     PaginationTestMixin,
+    NotFoundTestMixin,
     BaseClientTest[Transaction],
 ):
     """Tests for transactions API."""
 
     endpoint = "/api/v1/billings/transactions"
 
+    not_found_endpoint = f"{endpoint}/1000"
     pagination_factory_name = "transactions"
 
     def test_list_ok(self, api: DRFClient, transactions: list[Transaction]) -> None:

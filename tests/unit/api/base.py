@@ -82,15 +82,15 @@ class PaginationTestMixin(BaseTestT):
 class NotFoundTestMixin(BaseTestT):
     """Mixin for 'missing item' tests."""
 
-    not_found_endpoint: str | None
+    not_found_endpoint: str | None = None
 
-    def get_not_found_endpoint(self, *args: Any, **kwargs: Any) -> str:
+    def get_not_found_endpoint(self, *_: Any, **__: Any) -> str:
         if self.not_found_endpoint is not None:
             return self.not_found_endpoint
-        return NotImplemented
+        raise NotImplementedError
 
     def test_not_found(self) -> None:
         """If the requested item is not found, response with a correct message and 404 status is returned."""
         got = self.client.get(self.get_not_found_endpoint(), expected_status_code=404)
 
-        assert "error" in got
+        assert "errors" in got, got
