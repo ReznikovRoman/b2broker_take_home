@@ -42,7 +42,7 @@ jobs:
           mysql password: $B2B_DB_PASSWORD
       - name: Wait for MySQL to be ready
         run: |
-          mysqladmin ping -h 127.0.0.1 -P 3306 -u test -p "pass"
+          mysqladmin ping -h db -P 3306 -u test -p "pass"
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
