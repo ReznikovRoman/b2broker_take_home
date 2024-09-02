@@ -53,8 +53,8 @@ jobs:
           mysql \
             --host 172.17.0.1 \
             --port ${{ job.services.mysql.ports['3306'] }} \
-            -uroot
-            -psecret -e "SHOW DATABASES;"
+            -u root
+            -p secret -e "SHOW DATABASES;"
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
