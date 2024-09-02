@@ -24,7 +24,7 @@ repos:
       name: Run isort
       alias: isort .
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: "v1.11.1"
+  rev: "v1.11.2"
   hooks:
     - id: mypy
       name: Run mypy
@@ -41,5 +41,8 @@ repos:
           django-filter,
           drf-spectacular,
           django-debug-toolbar,
+          pytest,
+          pytest-django,
+          model_bakery,
           https://github.com/typeddjango/djangorestframework-stubs/archive/5b9b6c2bef09d50f9665021f4c4de7424ee21884.zip,
         ]
