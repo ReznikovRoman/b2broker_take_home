@@ -9,17 +9,17 @@ on:
       - '**.md'
 
 jobs:
-#  lint:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: actions/setup-python@v4
-#        with:
-#          python-version: "3.12"
-#      - uses: pre-commit/action@v3.0.1
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - uses: pre-commit/action@v3.0.1
   test:
     runs-on: ubuntu-latest
-    # needs: lint
+    needs: lint
     env:
       PYTHONPATH: ${{ github.workspace }}
       B2B_CI: 1
@@ -44,7 +44,7 @@ jobs:
           --health-timeout 5s
           --health-retries 3
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
