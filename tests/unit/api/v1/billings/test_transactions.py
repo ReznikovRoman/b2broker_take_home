@@ -4,9 +4,8 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from django.conf import settings
-
 from b2broker.billings.models import Transaction
+from tests.unit.api.base import BaseClientTest, PaginationTestMixin
 
 if TYPE_CHECKING:
     from tests.unit.testlib import DRFClient
@@ -14,23 +13,30 @@ if TYPE_CHECKING:
 pytestmark = [pytest.mark.django_db]
 
 
-def test_list_ok(api: DRFClient, transactions: list[Transaction]) -> None:
-    """List of transactions is paginated and each wallet is correctly serialized."""
-    latest_transaction = Transaction.objects.latest("id")
+class TestTransactionAPI(
+    PaginationTestMixin,
+    BaseClientTest[Transaction],
+):
+    """Tests for transactions API."""
 
-    response = api.get("/api/v1/billings/transactions")
+    endpoint = "/api/v1/billings/transactions"
 
-    assert response["data"][0]["id"] == str(latest_transaction.id)
-    assert response["data"][0]["attributes"]["amount"] == f"{latest_transaction.amount:.18f}"
-    assert response["meta"]["pagination"]["count"] == settings.DEFAULT_SMALL_PAGE_SIZE + 1
-    assert "links" in response
+    pagination_factory_name = "transactions"
 
+    def test_list_ok(self, api: DRFClient, transactions: list[Transaction]) -> None:
+        """List of transactions is serialized correctly."""
+        latest_transaction = Transaction.objects.latest("id")
 
-def test_retrieve_ok(api: DRFClient, transaction: Transaction) -> None:
-    """Detailed transaction info is serialized correctly."""
-    response = api.get(f"/api/v1/billings/transactions/{transaction.id}")
+        got = api.get(self.endpoint)
 
-    assert response["data"]["id"] == str(transaction.id)
-    assert response["data"]["attributes"]["amount"] == f"{transaction.amount:.18f}"
-    assert response["data"]["attributes"]["txid"] == transaction.txid
-    assert response["data"]["attributes"]["created_at"] == transaction.created_at.astimezone().isoformat()
+        assert got["data"][0]["id"] == str(latest_transaction.id)
+        assert got["data"][0]["attributes"]["amount"] == f"{latest_transaction.amount:.18f}"
+
+    def test_retrieve_ok(self, api: DRFClient, transaction: Transaction) -> None:
+        """Detailed transaction info is serialized correctly."""
+        got = api.get(f"{self.endpoint}/{transaction.id}")
+
+        assert got["data"]["id"] == str(transaction.id)
+        assert got["data"]["attributes"]["amount"] == f"{transaction.amount:.18f}"
+        assert got["data"]["attributes"]["txid"] == transaction.txid
+        assert got["data"]["attributes"]["created_at"] == transaction.created_at.astimezone().isoformat()

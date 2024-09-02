@@ -7,6 +7,7 @@ import pytest
 from django.conf import settings
 
 from b2broker.billings.models import Wallet
+from tests.unit.api.base import BaseClientTest, PaginationTestMixin
 
 if TYPE_CHECKING:
     from tests.unit.testlib import DRFClient
@@ -14,23 +15,31 @@ if TYPE_CHECKING:
 pytestmark = [pytest.mark.django_db]
 
 
-def test_list_ok(api: DRFClient, wallets: list[Wallet]) -> None:
-    """List of wallets is paginated and each wallet is correctly serialized."""
-    latest_wallet = Wallet.objects.latest("id")
+class TestWalletAPI(
+    PaginationTestMixin,
+    BaseClientTest[Wallet],
+):
+    """Tests for wallets API."""
 
-    response = api.get("/api/v1/billings/wallets")
+    endpoint = "/api/v1/billings/wallets"
 
-    assert response["data"][0]["id"] == str(latest_wallet.id)
-    assert response["data"][0]["attributes"]["balance"] == f"{latest_wallet.balance:.18f}"
-    assert response["meta"]["pagination"]["count"] == settings.DEFAULT_SMALL_PAGE_SIZE + 1
-    assert "links" in response
+    pagination_factory_name = "wallets"
 
+    def test_list_ok(self, api: DRFClient, wallets: list[Wallet]) -> None:
+        """List of wallets is serialized correctly."""
+        latest_wallet = Wallet.objects.latest("id")
 
-def test_retrieve_ok(api: DRFClient, wallet: Wallet) -> None:
-    """Detailed wallet info is serialized correctly."""
-    response = api.get(f"/api/v1/billings/wallets/{wallet.id}")
+        got = api.get(self.endpoint)
 
-    assert response["data"]["id"] == str(wallet.id)
-    assert response["data"]["attributes"]["balance"] == f"{wallet.balance:.18f}"
-    assert response["data"]["attributes"]["label"] == wallet.label
-    assert response["data"]["attributes"]["created_at"] == wallet.created_at.astimezone().isoformat()
+        assert got["data"][0]["id"] == str(latest_wallet.id)
+        assert got["data"][0]["attributes"]["balance"] == f"{latest_wallet.balance:.18f}"
+        assert got["meta"]["pagination"]["count"] == settings.DEFAULT_SMALL_PAGE_SIZE + 1
+
+    def test_retrieve_ok(self, api: DRFClient, wallet: Wallet) -> None:
+        """Detailed wallet info is serialized correctly."""
+        got = api.get(f"{self.endpoint}/{wallet.id}")
+
+        assert got["data"]["id"] == str(wallet.id)
+        assert got["data"]["attributes"]["balance"] == f"{wallet.balance:.18f}"
+        assert got["data"]["attributes"]["label"] == wallet.label
+        assert got["data"]["attributes"]["created_at"] == wallet.created_at.astimezone().isoformat()
