@@ -31,7 +31,7 @@ jobs:
       B2B_DB_USER: user
       B2B_DB_PASSWORD: pass
     services:
-      mysql:
+      db:
         image: mysql:8.4
         env:
           MYSQL_DATABASE: $B2B_DB_NAME
