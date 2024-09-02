@@ -31,25 +31,30 @@ jobs:
       B2B_DB_USER: root
       B2B_DB_PASSWORD: root
     services:
-      db:
-        image: mysql:8.4
+      mysql:
+        image: mysql:latest
         env:
-          MYSQL_DATABASE: testdb
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_ROOT_HOST: "%"
+          MYSQL_DATABASE: acme_test
+          MYSQL_ROOT_PASSWORD: secret
         ports:
-          - "3306:3306"
+          - 33306:3306
         options: >-
-          --health-cmd "mysqladmin ping -h localhost"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Wait for MySQL to be ready
+      - name: Verify MySQL connection
         run: |
-          mysqladmin ping -h 127.0.0.1 -P 3306 --user=root --password=root
+          sudo apt update
+          sudo apt install -y mysql-client
+          mysql --version
+          mysql \
+            --host 172.17.0.1 \
+            --port ${{ job.services.mysql.ports['3306'] }} \
+            -uroot
+            -psecret -e "SHOW DATABASES;"
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
