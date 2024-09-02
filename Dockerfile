@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copy requirements files
 COPY ./requirements/requirements.txt /app/requirements.txt
+COPY ./requirements/requirements.test.txt /app/requirements.test.txt
 COPY ./requirements/requirements.lint.txt /app/requirements.lint.txt
 COPY ./requirements/requirements.dev.txt /app/requirements.dev.txt
 
