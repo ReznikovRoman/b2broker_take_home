@@ -50,10 +50,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Wait for MySQL to be ready
         run: |
-          until mysqladmin ping -h $B2B_DB_HOST -u $B2B_DB_USER -p"$B2B_DB_PASSWORD" --silent; do
-            echo 'Waiting for MySQL to be ready...'
-            sleep 3
-          done
+          mysqladmin ping -h $B2B_DB_HOST -u $B2B_DB_USER -p"$B2B_DB_PASSWORD"
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
