@@ -38,7 +38,6 @@ jobs:
           collation server: 'utf8_general_ci'
           mysql version: '8.4'
           mysql database: $B2B_DB_NAME
-          mysql root password: $B2B_DB_PASSWORD
           mysql user: $B2B_DB_USER
           mysql password: $B2B_DB_PASSWORD
       - name: Wait for MySQL to be ready
