@@ -45,7 +45,7 @@ jobs:
           --health-retries 3
     steps:
       - uses: actions/checkout@v3
-      - run: mysql -h $B2B_DB_HOST --port $B2B_DB_PORT -u root -p$B2B_DB_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS $B2B_DB_NAME;'
+      - run: mysql -h 127.0.0.1 --port $B2B_DB_PORT -u root -p$B2B_DB_PASSWORD -e 'CREATE DATABASE IF NOT EXISTS $B2B_DB_NAME;'
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
